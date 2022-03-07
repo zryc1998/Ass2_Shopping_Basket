@@ -1,0 +1,56 @@
+﻿@model Ass2_Shopping_Basket.ViewModels.BrandIndexViewModel
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Brand</h2>
+
+<p>
+    Total @Model.Brands.TotalItemCount brand item(s)
+    <br />
+    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+    </p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Brands)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Brands)
+    {
+        <tr>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Name)*@
+                @Html.ActionLink(item.Name, "Index", "Products", new { brand = item.Name }, null)
+            </td>
+            <td>
+                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) 
+                    @Html.Raw(" | ") 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                }
+            @*@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = item.ID })*@
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    Page @(Model.Brands.PageCount < Model.Brands.PageNumber ? 0 : Model.Brands.PageNumber) of
+    @Model.Brands.PageCount
+    @Html.PagedListPager(Model.Brands, page => Url.Action("Index", new
+{
+    category = @Model.Brands,
+    page
+}))
+</div>

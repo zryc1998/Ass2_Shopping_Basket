@@ -1,0 +1,8 @@
+﻿@model Ass2_Shopping_Basket.ViewModels.BasketSummaryViewModel
+
+<ul class="nav navbar-nav navbar-right" id="basket">
+    <li>
+        @Html.ActionLink("Your Basket: " + Model.NumberOfItems + " item(s) " + HttpUtility.HtmlDecode(
+        Html.DisplayFor(model => Model.TotalCost).ToString()), "Index", "Basket")
+    </li>
+</ul>

@@ -1,0 +1,53 @@
+﻿@*@model IEnumerable<Ass2_Shopping_Basket.Models.ProductImage>*@
+
+@model Ass2_Shopping_Basket.ViewModels.ProductViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Images";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Upload New Image", "Upload")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Images)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Images)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @if (!String.IsNullOrWhiteSpace(item.FileName))
+                {
+                    <img src="@(Url.Content(Constants.ProductImagePath) + item.FileName)">
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    Page @(Model.Images.PageCount < Model.Images.PageNumber ? 0 : Model.Images.PageNumber) of
+    @Model.Images.PageCount
+    @Html.PagedListPager(Model.Images, page => Url.Action("Index", new
+{
+    category = @Model.Images,
+    page
+}))
+</div>
